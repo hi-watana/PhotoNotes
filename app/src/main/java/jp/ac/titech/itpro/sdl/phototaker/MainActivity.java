@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                // TODO: You should setup appropriate parameters for the intent
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 PackageManager packageManager = getPackageManager();
                 List activities = packageManager
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         switch (reqCode) {
         case REQ_PHOTO:
             if (resCode == RESULT_OK) {
-                // TODO: You should implement the code that retrieve a bitmap image
                 Bundle extras = data.getExtras();
                 photoImg = (Bitmap) extras.get("data");
                 showPhoto();
