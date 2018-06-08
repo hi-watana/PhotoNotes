@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private final static int REQ_PHOTO = 1234;
     private Bitmap photoImg = null;
     private Uri fileUri = null;
+    private String filename = null;
+
+    private final static String KEY_NAME = "MainActivity.filename";
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -43,11 +47,13 @@ public class MainActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
+            filename = "IMG_"+ timeStamp + ".jpg";
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    filename);
         } else if(type == MEDIA_TYPE_VIDEO) {
+            filename = "VID_"+ timeStamp + ".mp4";
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
+                    filename);
         } else {
             return null;
         }
@@ -59,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState != null) {
+            filename = savedInstanceState.getString(KEY_NAME);
+            if (filename != null) {
+                fileUri = FileProvider.getUriForFile(this,
+                        BuildConfig.APPLICATION_ID + ".fileprovider",
+                        new File(this.getFilesDir(), filename));
+            }
+        }
 
         Button photoButton = findViewById(R.id.photo_button);
         photoButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +98,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showPhoto() {
-        if (fileUri == null) return;
+        if (fileUri == null) {
+            Log.d("debug", "fileUri == null");
+            return;
+        }
         ImageView photoView = findViewById(R.id.photo_view);
         photoView.setImageURI(fileUri);
     }
@@ -104,5 +122,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showPhoto();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (fileUri != null)
+            outState.putString(KEY_NAME, fileUri.getPath());
     }
 }
