@@ -22,7 +22,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private final static int REQ_PHOTO = 1234;
-    private Bitmap photoImg = null;
     private Uri fileUri = null;
     private String filename = null;
 
