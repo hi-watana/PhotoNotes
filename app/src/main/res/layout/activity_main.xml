@@ -21,23 +21,10 @@
         android:layout_weight="1"
         android:contentDescription="@string/photo_view_description" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/photo_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="@string/photo_button_label" />
 
-        <Button
-            android:id="@+id/photo_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:text="@string/photo_button_label" />
-
-        <Button
-            android:id="@+id/zoomable_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:text="@string/zoomable_button_label" />
-    </LinearLayout>
 </LinearLayout>

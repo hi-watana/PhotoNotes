@@ -17,7 +17,6 @@ public class ZoomableImageView extends ImageView {
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
     private final float SCALE_MAX = 3.0f;
-    //private final float SCALE_MIN = 0.3f;
     private final float PINCH_SENSITIVITY = 2.0f;
 
     private final float UNDEF = -1.0f;
@@ -40,7 +39,6 @@ public class ZoomableImageView extends ImageView {
     }
 
     private void init(Context context) {
-        //setScaleType(ScaleType.MATRIX);
         setScaleType(ScaleType.FIT_CENTER);
         scaleGestureDetector = new ScaleGestureDetector(context, simpleOnScaleGestureListener);
         gestureDetector = new GestureDetector(context,simpleOnGestureListener);
@@ -80,15 +78,18 @@ public class ZoomableImageView extends ImageView {
             float scale = scaleFactor * previousScale;
 
             if (scale < minScale) {
+                // Do nothing.
                 return false;
             }
 
             if (scale > SCALE_MAX) {
+                // Do nothing.
                 return false;
             }
 
             matrix.postScale(scaleFactor, scaleFactor, focusX,focusY);
 
+            // repaint
             invalidate();
 
             return super.onScale(detector);
@@ -111,7 +112,8 @@ public class ZoomableImageView extends ImageView {
             float previousScale = getMatrixValue(Matrix.MSCALE_Y);
 
             float epsilon = minScale / 100;
-            if (previousScale <= minScale + epsilon) {
+            // |previousScale - minScale| < epsilon (previousScale ~ minScale)
+            if (previousScale < minScale + epsilon) {
                 setScaleType(ScaleType.FIT_CENTER);
             }
         }
@@ -170,6 +172,7 @@ public class ZoomableImageView extends ImageView {
                 }
             }
             matrix.postTranslate(x,y);
+            // repaint
             invalidate();
 
             return super.onScroll(event1, event2, distanceX, distanceY);
