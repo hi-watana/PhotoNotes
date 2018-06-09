@@ -14,7 +14,7 @@
         android:contentDescription="@string/photo_view_description"/>
         -->
 
-    <jp.ac.titech.itpro.sdl.phototaker.ZoomableImageView
+    <jp.ac.titech.itpro.sdl.photonotes.ZoomableImageView
         android:id="@+id/photo_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

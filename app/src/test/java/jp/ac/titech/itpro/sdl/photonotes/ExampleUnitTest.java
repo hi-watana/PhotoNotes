@@ -1,4 +1,4 @@
-package jp.ac.titech.itpro.sdl.phototaker;
+package jp.ac.titech.itpro.sdl.photonotes;
 
 import org.junit.Test;
 

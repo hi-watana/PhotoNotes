@@ -1,4 +1,4 @@
-package jp.ac.titech.itpro.sdl.phototaker;
+package jp.ac.titech.itpro.sdl.photonotes;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("jp.ac.titech.itpro.sdl.phototaker", appContext.getPackageName());
+        assertEquals("jp.ac.titech.itpro.sdl.photonotes", appContext.getPackageName());
     }
 }
