@@ -2,6 +2,7 @@ package jp.ac.titech.itpro.sdl.phototaker;
 
 import android.content.Context;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -16,10 +17,14 @@ public class ZoomableImageView extends ImageView {
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
     private final float SCALE_MAX = 3.0f;
-    private final float SCALE_MIN = 0.3f;
+    //private final float SCALE_MIN = 0.3f;
     private final float PINCH_SENSITIVITY = 2.0f;
 
-    private float previousScaleFactor = -1.0f;
+    private final float UNDEF = -1.0f;
+    private final float PENDING = -2.0f;
+    private float previousScaleFactor = UNDEF;
+    private float originalImageWidth;
+    private float originalImageHeight;
 
     public ZoomableImageView(Context context) {
         super(context);
@@ -35,7 +40,8 @@ public class ZoomableImageView extends ImageView {
     }
 
     private void init(Context context) {
-        setScaleType(ScaleType.MATRIX);
+        //setScaleType(ScaleType.MATRIX);
+        setScaleType(ScaleType.FIT_CENTER);
         scaleGestureDetector = new ScaleGestureDetector(context, simpleOnScaleGestureListener);
         gestureDetector = new GestureDetector(context,simpleOnGestureListener);
     }
@@ -56,15 +62,24 @@ public class ZoomableImageView extends ImageView {
         public boolean onScale(ScaleGestureDetector detector) {
             float scaleFactor = detector.getScaleFactor();
             float previousScale = getMatrixValue(Matrix.MSCALE_Y);
+            float minScale = Math.min(getWidth() / originalImageWidth, getHeight() / originalImageHeight);
 
             Log.d("debug", new Float(previousScale).toString());
-            float prop = (previousScaleFactor < 0.0f) ? 1.0f : scaleFactor / previousScaleFactor;
-            previousScaleFactor = scaleFactor;
-            scaleFactor = 1 + (float) Math.log(prop) / (PINCH_SENSITIVITY);
+            if (previousScaleFactor == UNDEF) {
+                previousScaleFactor = scaleFactor;
+                scaleFactor = minScale / previousScale;
+            } else if (previousScaleFactor == PENDING) {
+                previousScaleFactor = scaleFactor;
+                scaleFactor = (previousScale > minScale) ? 1.0f : minScale / previousScale;
+            } else {
+                float prop = scaleFactor / previousScaleFactor;
+                previousScaleFactor = scaleFactor;
+                scaleFactor = 1 + (float) Math.log(prop) / (PINCH_SENSITIVITY);
+            }
 
             float scale = scaleFactor * previousScale;
 
-            if (scale < SCALE_MIN) {
+            if (scale < minScale) {
                 return false;
             }
 
@@ -82,6 +97,7 @@ public class ZoomableImageView extends ImageView {
 
         @Override
         public boolean onScaleBegin(ScaleGestureDetector detector) {
+            setScaleType(ScaleType.MATRIX);
             focusX = detector.getFocusX();
             focusY = detector.getFocusY();
             return super.onScaleBegin(detector);
@@ -90,7 +106,14 @@ public class ZoomableImageView extends ImageView {
         @Override
         public void onScaleEnd(ScaleGestureDetector detector) {
             super.onScaleEnd(detector);
-            previousScaleFactor = -1.0f;
+            previousScaleFactor = PENDING;
+            float minScale = Math.min(getWidth() / originalImageWidth, getHeight() / originalImageHeight);
+            float previousScale = getMatrixValue(Matrix.MSCALE_Y);
+
+            float epsilon = minScale / 100;
+            if (previousScale <= minScale + epsilon) {
+                setScaleType(ScaleType.FIT_CENTER);
+            }
         }
 
     };
@@ -152,6 +175,13 @@ public class ZoomableImageView extends ImageView {
             return super.onScroll(event1, event2, distanceX, distanceY);
         }
     };
+
+    @Override
+    public void setImageURI(Uri uri) {
+        super.setImageURI(uri);
+        originalImageWidth = getImageWidth();
+        originalImageHeight = getImageHeight();
+    }
 
     private float getImageWidth() {
         return (getDrawable().getIntrinsicWidth())*getMatrixValue(Matrix.MSCALE_X);
