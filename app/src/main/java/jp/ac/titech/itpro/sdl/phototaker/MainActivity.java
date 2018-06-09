@@ -2,7 +2,6 @@ package jp.ac.titech.itpro.sdl.phototaker;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -27,8 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String KEY_NAME = "MainActivity.filename";
 
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
+    private static final int VIEWTYPE_FIXED = 0;
+    private static final int VIEWTYPE_ZOOMABLE = 1;
+    private int viewType = VIEWTYPE_FIXED;
+
+    private static final int MEDIA_TYPE_IMAGE = 1;
+    private static final int MEDIA_TYPE_VIDEO = 2;
 
     /** Create a file Uri for saving an image or video */
     private Uri getOutputMediaFileUri(int type){
@@ -39,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Create a File for saving an image or video */
     private File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
         File mediaStorageDir = this.getFilesDir();
-        // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void showPhoto() {
