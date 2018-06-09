@@ -2,6 +2,7 @@ package jp.ac.titech.itpro.sdl.photonotes;
 
 import android.content.Context;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -187,11 +188,15 @@ public class ZoomableImageView extends ImageView {
     }
 
     private float getImageWidth() {
-        return (getDrawable().getIntrinsicWidth())*getMatrixValue(Matrix.MSCALE_X);
+        Drawable drawable = getDrawable();
+        if (drawable == null) return 0.0f;
+        return (drawable.getIntrinsicWidth())*getMatrixValue(Matrix.MSCALE_X);
     }
 
     private float getImageHeight() {
-        return (getDrawable().getIntrinsicHeight())*getMatrixValue(Matrix.MSCALE_Y);
+        Drawable drawable = getDrawable();
+        if (drawable == null) return 0.0f;
+        return (drawable.getIntrinsicHeight())*getMatrixValue(Matrix.MSCALE_Y);
     }
 
 }

@@ -26,10 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String KEY_NAME = "MainActivity.filename";
 
-    private static final int VIEWTYPE_FIXED = 0;
-    private static final int VIEWTYPE_ZOOMABLE = 1;
-    private int viewType = VIEWTYPE_FIXED;
-
     private static final int MEDIA_TYPE_IMAGE = 1;
     private static final int MEDIA_TYPE_VIDEO = 2;
 
