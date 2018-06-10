@@ -1,26 +1,19 @@
 package jp.ac.titech.itpro.sdl.photonotes;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class PhotoViewActivity extends AppCompatActivity {
     public static final String PHOTOPOS_EXTRA = "photo_pos";
@@ -81,21 +74,6 @@ public class PhotoViewActivity extends AppCompatActivity {
                     .setTitle("CONFIRM")
                     .setMessage("Do you really delete this note?")
                     .setPositiveButton("OK", (dialog, which) -> {
-                        // OK button pressed
-                        //Intent intent = new Intent();
-                        //intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //PackageManager packageManager = getPackageManager();
-                        //List activities = packageManager
-                        //        .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                        //if (activities.size() > 0) {
-                        //    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                        //    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                        //    startActivityForResult(intent, REQ_PHOTO);
-                        //}
-                        //else {
-                        //    Toast.makeText(PhotoViewActivity.this,
-                        //            R.string.toast_no_activities, Toast.LENGTH_LONG).show();
-                        //}
                         deleteFile(filename);
                         setResult(FILE_DELETED);
                         finish();
