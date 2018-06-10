@@ -22,9 +22,9 @@
         android:contentDescription="@string/photo_view_description" />
 
     <Button
-        android:id="@+id/remove_button"
+        android:id="@+id/delete_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/remove_button_label" />
+        android:text="@string/delete_button_label" />
 
 </LinearLayout>

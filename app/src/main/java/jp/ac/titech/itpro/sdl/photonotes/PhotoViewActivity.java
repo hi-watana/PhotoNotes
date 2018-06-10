@@ -75,7 +75,7 @@ public class PhotoViewActivity extends AppCompatActivity {
             }
         }
 
-        Button photoButton = findViewById(R.id.remove_button);
+        Button photoButton = findViewById(R.id.delete_button);
         photoButton.setOnClickListener(v -> {
             new AlertDialog.Builder(PhotoViewActivity.this)
                     .setTitle("CONFIRM")
