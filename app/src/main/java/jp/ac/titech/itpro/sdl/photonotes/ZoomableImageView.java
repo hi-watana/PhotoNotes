@@ -63,7 +63,6 @@ public class ZoomableImageView extends ImageView {
             float previousScale = getMatrixValue(Matrix.MSCALE_Y);
             float minScale = Math.min(getWidth() / originalImageWidth, getHeight() / originalImageHeight);
 
-            Log.d("debug", new Float(previousScale).toString());
             if (previousScaleFactor == UNDEF) {
                 previousScaleFactor = scaleFactor;
                 scaleFactor = minScale / previousScale;

@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">PhotoNotes</string>
     <string name="photo_view_description">Photo</string>
-    <string name="photo_button_label">Photo</string>
-    <string name="zoomable_button_label">Zoomable</string>
+    <string name="new_button_label">New</string>
+    <string name="remove_button_label">Remove</string>
     <string name="toast_no_activities">No activities for taking photoes</string>
+    <string name="toast_no_such_photo">No such photo</string>
+    <string name="zoomable_button_label">Zoomable</string>
 </resources>
