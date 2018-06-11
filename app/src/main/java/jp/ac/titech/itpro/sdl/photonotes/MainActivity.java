@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                         .filter(File::isFile)
                         .map(File::getName)
                         .filter(s -> s.endsWith(".JPG") || s.endsWith(".jpg") || s.endsWith(".PNG") || s.endsWith(".png"))
-                        .sorted().collect(Collectors.toList());
+                        .sorted(Comparator.reverseOrder()).collect(Collectors.toList());
     }
 
     /** Create a File for saving an image or video */
