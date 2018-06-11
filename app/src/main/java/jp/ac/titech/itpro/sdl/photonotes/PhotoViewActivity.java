@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class PhotoViewActivity extends AppCompatActivity {
     public static final String PHOTOPOS_EXTRA = "photo_pos";
@@ -23,35 +21,6 @@ public class PhotoViewActivity extends AppCompatActivity {
     private String filename = null;
 
     private final static String KEY_NAME = "PhotoViewActivity.filename";
-
-    private static final int MEDIA_TYPE_IMAGE = 1;
-    private static final int MEDIA_TYPE_VIDEO = 2;
-
-    /** Create a file Uri for saving an image or video */
-    private Uri getOutputMediaFileUri(int type){
-        return FileProvider.getUriForFile(this,
-                BuildConfig.APPLICATION_ID + ".fileprovider",
-                getOutputMediaFile(MEDIA_TYPE_IMAGE));
-    }
-
-    /** Create a File for saving an image or video */
-    private File getOutputMediaFile(int type){
-        File mediaStorageDir = this.getFilesDir();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            filename = "IMG_"+ timeStamp + ".jpg";
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    filename);
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            filename = "VID_"+ timeStamp + ".mp4";
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    filename);
-        } else {
-            return null;
-        }
-        return mediaFile;
-    }
 
 
     @Override
@@ -69,18 +38,16 @@ public class PhotoViewActivity extends AppCompatActivity {
         }
 
         Button photoButton = findViewById(R.id.delete_button);
-        photoButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(PhotoViewActivity.this)
-                    .setTitle("CONFIRM")
-                    .setMessage("Do you really delete this note?")
-                    .setPositiveButton("OK", (dialog, which) -> {
-                        deleteFile(filename);
-                        setResult(FILE_DELETED);
-                        finish();
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
-        });
+        photoButton.setOnClickListener(v -> new AlertDialog.Builder(PhotoViewActivity.this)
+                .setTitle("CONFIRM")
+                .setMessage("Do you really delete this note?")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    deleteFile(filename);
+                    setResult(FILE_DELETED);
+                    finish();
+                })
+                .setNegativeButton("Cancel", null)
+                .show());
 
         filename = getIntent().getStringExtra(PHOTOPOS_EXTRA);
         if (filename != null) {
