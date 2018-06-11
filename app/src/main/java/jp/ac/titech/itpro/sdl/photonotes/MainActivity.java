@@ -58,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<String> getPhotoFilenames() {
-        List<String> filenames = Arrays.asList(new File(getFilesDir().getPath()).listFiles()).stream().map(f -> f.getName()).collect(Collectors.toList());
-        filenames.sort(new Comparator<String>() {
-            @Override
-            public int compare(String s, String t1) {
-                return t1.compareTo(s);
-            }
-        });
+        List<String> filenames = Arrays.asList(
+                new File(getFilesDir().getPath())
+                        .listFiles()).stream()
+                        .filter(f -> f.isFile())
+                        .map(f -> f.getName())
+                        .filter(s -> s.endsWith(".JPG") || s.endsWith(".jpg") || s.endsWith(".PNG") || s.endsWith(".png"))
+                        .collect(Collectors.toList());
+        filenames.sort((s, t1) -> t1.compareTo(s));
         return filenames;
     }
 
@@ -130,23 +131,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button photoButton = findViewById(R.id.new_button);
-        photoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                PackageManager packageManager = getPackageManager();
-                List activities = packageManager
-                        .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                if (activities.size() > 0) {
-                    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                    startActivityForResult(intent, REQ_PHOTO);
-                }
-                else {
-                    Toast.makeText(MainActivity.this,
-                            R.string.toast_no_activities, Toast.LENGTH_LONG).show();
-                }
+        photoButton.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+            PackageManager packageManager = getPackageManager();
+            List activities = packageManager
+                    .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            if (activities.size() > 0) {
+                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                startActivityForResult(intent, REQ_PHOTO);
+            }
+            else {
+                Toast.makeText(MainActivity.this,
+                        R.string.toast_no_activities, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -174,8 +172,10 @@ public class MainActivity extends AppCompatActivity {
                     filenames = getPhotoFilenames();
                     photoListAdapter.clear();
                     photoListAdapter.addAll(filenames);
-
                 }
+                break;
+            default:
+                break;
         }
     }
 }
