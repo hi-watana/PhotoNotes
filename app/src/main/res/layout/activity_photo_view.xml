@@ -5,26 +5,45 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--
-    <ImageView
+    <jp.ac.titech.itpro.sdl.photonotes.ZoomableImageView
         android:id="@+id/photo_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:contentDescription="@string/photo_view_description"/>
-        -->
-
-    <jp.ac.titech.itpro.sdl.photonotes.ZoomableImageView
-        android:id="@+id/photo_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
         android:contentDescription="@string/photo_view_description" />
 
-    <Button
-        android:id="@+id/delete_button"
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="?android:attr/listDivider" />
+
+    <EditText
+        android:id="@+id/note_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/delete_button_label" />
+        android:maxLines="@string/note_text_lines"
+        android:minLines="@string/note_text_lines"
+        android:contentDescription="@string/note_text_description"
+        android:inputType="" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back_button_label" />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_button_label"/>
+
+    </LinearLayout>
 
 </LinearLayout>
