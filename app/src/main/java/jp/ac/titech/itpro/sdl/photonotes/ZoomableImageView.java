@@ -111,7 +111,7 @@ public class ZoomableImageView extends ImageView {
             float minScale = Math.min(getWidth() / originalImageWidth, getHeight() / originalImageHeight);
             float previousScale = getMatrixValue(Matrix.MSCALE_Y);
 
-            float epsilon = minScale / 100;
+            float epsilon = minScale / 50;
             // |previousScale - minScale| < epsilon (previousScale ~ minScale)
             if (previousScale < minScale + epsilon) {
                 setScaleType(ScaleType.FIT_CENTER);
