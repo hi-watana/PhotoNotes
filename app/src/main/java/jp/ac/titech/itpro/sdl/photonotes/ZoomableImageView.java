@@ -5,13 +5,11 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.ImageView;
 
-import java.util.LinkedList;
 
 public class ZoomableImageView extends ImageView {
     private Matrix matrix = new Matrix();

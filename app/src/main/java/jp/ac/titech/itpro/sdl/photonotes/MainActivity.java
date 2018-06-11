@@ -140,6 +140,12 @@ public class MainActivity extends AppCompatActivity {
             case REQ_PHOTO:
                 if (resCode == RESULT_OK) {
                     if (fileUri != null) {
+                        // Rename filename (Time when NEW button was pressed -> Time when a photo was created)
+                        File oldFile = new File(this.getFilesDir(), filename);
+                        File newFile = getOutputMediaFile();
+                        if (newFile.exists() == false)
+                            oldFile.renameTo(newFile);
+
                         filenames = getPhotoFilenames();
                         photoListAdapter.clear();
                         photoListAdapter.addAll(filenames);
