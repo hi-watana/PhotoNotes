@@ -61,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
                         .sorted(Comparator.reverseOrder()).collect(Collectors.toList());
     }
 
+    private void updatePhotoListAdapter() {
+        photoListAdapter.clear();
+        photoListAdapter.addAll(filenames);
+    }
+
     /** Create a File for saving an image or video */
     private File getOutputMediaFile() {
         File mediaStorageDir = this.getFilesDir();
@@ -143,12 +148,14 @@ public class MainActivity extends AppCompatActivity {
                         // Rename filename (Time when NEW button was pressed -> Time when a photo was created)
                         File oldFile = new File(this.getFilesDir(), filename);
                         File newFile = getOutputMediaFile();
-                        if (newFile.exists() == false)
-                            oldFile.renameTo(newFile);
+                        if (newFile.exists() == false) {
+                            if (oldFile.renameTo(newFile) == false) {
+                                Log.d("debug", "Rename failed.");
+                            }
+                        }
 
                         filenames = getPhotoFilenames();
-                        photoListAdapter.clear();
-                        photoListAdapter.addAll(filenames);
+                        updatePhotoListAdapter();
                         Intent intent = new Intent(MainActivity.this, PhotoViewActivity.class);
                         intent.putExtra(PhotoViewActivity.PHOTOPOS_EXTRA, filename);
                         startActivity(intent);
@@ -160,8 +167,7 @@ public class MainActivity extends AppCompatActivity {
             case REQ_VIEW:
                 if (resCode == FILE_DELETED) {
                     filenames = getPhotoFilenames();
-                    photoListAdapter.clear();
-                    photoListAdapter.addAll(filenames);
+                    updatePhotoListAdapter();
                 }
                 break;
             default:
