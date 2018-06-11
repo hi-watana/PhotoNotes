@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,16 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -43,48 +39,36 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri fileUri = null;
     private String filename = null;
-    private static final int MEDIA_TYPE_IMAGE = 1;
-    private static final int MEDIA_TYPE_VIDEO = 2;
 
     private ArrayAdapter<String> photoListAdapter = null;
     private ListView photoListView = null;
     private List<String> filenames = null;
 
     /** Create a file Uri for saving an image or video */
-    private Uri getOutputMediaFileUri(int type){
+    private Uri getOutputMediaFileUri(){
         return FileProvider.getUriForFile(this,
                 BuildConfig.APPLICATION_ID + ".fileprovider",
-                getOutputMediaFile(MEDIA_TYPE_IMAGE));
+                getOutputMediaFile());
     }
 
     private List<String> getPhotoFilenames() {
-        List<String> filenames = Arrays.asList(
+        return Arrays.stream(
                 new File(getFilesDir().getPath())
-                        .listFiles()).stream()
-                        .filter(f -> f.isFile())
-                        .map(f -> f.getName())
+                        .listFiles())
+                        .filter(File::isFile)
+                        .map(File::getName)
                         .filter(s -> s.endsWith(".JPG") || s.endsWith(".jpg") || s.endsWith(".PNG") || s.endsWith(".png"))
-                        .collect(Collectors.toList());
-        filenames.sort((s, t1) -> t1.compareTo(s));
-        return filenames;
+                        .sorted().collect(Collectors.toList());
     }
 
     /** Create a File for saving an image or video */
-    private File getOutputMediaFile(int type){
+    private File getOutputMediaFile() {
         File mediaStorageDir = this.getFilesDir();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            filename = "IMG_"+ timeStamp + ".jpg";
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    filename);
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            filename = "VID_"+ timeStamp + ".mp4";
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    filename);
-        } else {
-            return null;
-        }
+        filename = "IMG_"+ timeStamp + ".jpg";
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                filename);
         return mediaFile;
     }
 
@@ -138,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             List activities = packageManager
                     .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             if (activities.size() > 0) {
-                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                fileUri = getOutputMediaFileUri();
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 startActivityForResult(intent, REQ_PHOTO);
             }
