@@ -1,6 +1,6 @@
 # PhotoNotes
 
-PhotoNotes is a memo app with photo.
+PhotoNotes is a photo-centered memo app. Take photos and add comments to them using PhotoNotes app. You can use photos with some comments as notes.
 
 ## Usage
 
