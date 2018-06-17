@@ -53,10 +53,24 @@ public class MainActivity extends AppCompatActivity {
     private String EXTENSION_TXT = "txt";
 
     // Create a file Uri for saving an image
-    private Uri getOutputMediaFileUri(){
+    private Uri getOutputMediaFileUri() {
         return FileProvider.getUriForFile(this,
                 BuildConfig.APPLICATION_ID + ".fileprovider",
                 getOutputMediaFile(EXTENSION_JPG));
+    }
+
+    private String getDateFormatFromFilename(String filename) {
+        return new StringBuffer().append(filename.substring(0, 4))
+                .append("/")
+                .append(filename.substring(4, 6))
+                .append("/")
+                .append(filename.substring(6, 8))
+                .append(" ")
+                .append(filename.substring(9, 11))
+                .append(":")
+                .append(filename.substring(11, 13))
+                .append(":")
+                .append(filename.substring(13, 15)).toString();
     }
 
     private List<String> getPhotoFilenames() {
@@ -129,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                 TextView noteHeadText = view.findViewById(android.R.id.text1);
                                 TextView photoNameText = view.findViewById(android.R.id.text2);
                                 noteHeadText.setText(getTopOfNotes(noteFileName));
-                                photoNameText.setText(photoFile.getName());
+                                photoNameText.setText("Created on " + getDateFormatFromFilename(photoFile.getName()) + ".");
                             }
                         }
                         return view;
